@@ -19,10 +19,7 @@
 ## 🎬 Live Demo
 
 <p align="center">
-  <video width="600" controls>
-    <source src="https://github.com/aghyad97/number-flow-flutter/blob/main/demo/demo.mp4?raw=true" type="video/mp4">
-    <img src="https://github.com/aghyad97/number-flow-flutter/blob/main/demo/demo.gif?raw=true" alt="NumberFlow Demo" width="600">
-  </video>
+  <img src="https://github.com/aghyad97/number-flow-flutter/blob/main/demo/demo.gif?raw=true" alt="NumberFlow Demo" width="600">
 </p>
 
 <p align="center">
