@@ -56,7 +56,7 @@ class NumberFlow extends StatefulWidget {
   final VoidCallback? onAnimationComplete;
 
   const NumberFlow({
-    Key? key,
+    super.key,
     required this.value,
     this.prefix,
     this.suffix,
@@ -84,7 +84,7 @@ class NumberFlow extends StatefulWidget {
     this.suffixStyle,
     this.onAnimationStart,
     this.onAnimationComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<NumberFlow> createState() => NumberFlowState();
@@ -100,8 +100,7 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
   late Animation<double> _opacityAnimation;
 
   String _currentText = '';
-  String _previousText = '';
-  List<_DigitTransition> _digitTransitions = [];
+  final List<_DigitTransition> _digitTransitions = [];
 
   // Group integration - forward declaration, will be set in didChangeDependencies
   dynamic _group;
@@ -192,8 +191,6 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
   }
 
   void _animateToNewValue(num oldValue, num newValue) {
-    _previousText = _currentText;
-
     setState(() {
       _updateText();
       _prepareDigitTransitions(oldValue, newValue);
@@ -384,10 +381,10 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Colors.black.withOpacity(0.0),
-              Colors.black.withOpacity(1.0),
-              Colors.black.withOpacity(1.0),
-              Colors.black.withOpacity(0.0),
+              Colors.black.withValues(alpha: 0.0),
+              Colors.black.withValues(alpha: 1.0),
+              Colors.black.withValues(alpha: 1.0),
+              Colors.black.withValues(alpha: 0.0),
             ],
             stops: const [0.0, 0.02, 0.98, 1.0],
           ).createShader(bounds);
