@@ -539,7 +539,7 @@ We welcome contributions! Here's how you can help:
 ### Development Setup
 
 ```bash
-git clone https://github.com/aghyad97/number_flow.git
+git clone https://github.com/aghyad97/number-flow-flutter
 cd number_flow
 flutter packages get
 cd example && flutter run
@@ -564,7 +564,7 @@ This library is inspired by and aims to be a faithful Flutter port of the excell
 </p>
 
 <p align="center">
-  <a href="https://github.com/aghyad97/number_flow">⭐ Star on GitHub</a> •
+  <a href="https://github.com/aghyad97/number-flow-flutter">⭐ Star on GitHub</a> •
   <a href="https://pub.dev/packages/number_flow">📦 View on pub.dev</a> •
-  <a href="https://github.com/aghyad97/number_flow/issues">🐛 Report Issues</a>
+  <a href="https://github.com/aghyad97/number-flow-flutter/issues">🐛 Report Issues</a>
 </p>

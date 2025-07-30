@@ -99,7 +99,6 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
   late Animation<double> _spinAnimation;
   late Animation<double> _opacityAnimation;
 
-  num _previousValue = 0;
   String _currentText = '';
   String _previousText = '';
   List<_DigitTransition> _digitTransitions = [];
@@ -150,7 +149,6 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
       curve: widget.opacityCurve,
     ));
 
-    _previousValue = widget.value;
     _updateText();
 
     // Apply plugins
@@ -178,7 +176,6 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
     if (oldWidget.value != widget.value && widget.animated) {
       _animateToNewValue(oldWidget.value, widget.value);
     } else if (!widget.animated) {
-      _previousValue = widget.value;
       _updateText();
     }
 
@@ -195,7 +192,6 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
   }
 
   void _animateToNewValue(num oldValue, num newValue) {
-    _previousValue = oldValue;
     _previousText = _currentText;
 
     setState(() {
