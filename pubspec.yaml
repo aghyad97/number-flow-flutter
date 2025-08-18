@@ -1,6 +1,6 @@
 name: number_flow
 description: An animated number component for Flutter, inspired by the number-flow library. Smoothly transitions between number values with customizable animations.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/aghyad97/number-flow-flutter
 
 environment:

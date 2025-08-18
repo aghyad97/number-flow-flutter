@@ -73,7 +73,7 @@ class _NumberFlowDemoState extends State<NumberFlowDemo> {
               NumberFlow(
                 value: _currentValue,
                 style: const TextStyle(
-                  fontSize: 32,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -262,6 +262,72 @@ class _NumberFlowDemoState extends State<NumberFlowDemo> {
               onTap: () {
                 setState(() {
                   _bigNumber = _generateRandomNumber(100000, 9999999);
+                });
+              },
+            ),
+
+            const SizedBox(height: 20),
+
+            // Start From Zero Example
+            _buildSection(
+              'Start From Zero (Great for cached data)',
+              Column(
+                children: [
+                  NumberFlow(
+                    value: _bigNumber,
+                    startFromZero: true,
+                    startFromZeroDelay: const Duration(milliseconds: 300),
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.purple,
+                    ),
+                    spinDuration: const Duration(milliseconds: 1000),
+                    spinCurve: NumberFlowCurves.smoothSpin,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Starts from 0 with 300ms delay',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
+              onTap: () {
+                setState(() {
+                  _bigNumber = _generateRandomNumber(1000, 99999);
+                });
+              },
+            ),
+
+            const SizedBox(height: 20),
+
+            // Start From Zero with longer delay example
+            _buildSection(
+              'Start From Zero with Longer Delay',
+              Column(
+                children: [
+                  NumberFlow(
+                    value: _counter.toDouble(),
+                    startFromZero: true,
+                    startFromZeroDelay: const Duration(milliseconds: 1000),
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal,
+                    ),
+                    spinDuration: const Duration(milliseconds: 800),
+                    spinCurve: NumberFlowCurves.elastic,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Starts from 0 with 1000ms delay',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
+              onTap: () {
+                setState(() {
+                  _counter = _generateRandomInt(100, 9999);
                 });
               },
             ),

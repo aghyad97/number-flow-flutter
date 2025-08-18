@@ -40,6 +40,13 @@ class NumberFlow extends StatefulWidget {
   final bool respectMotionPreference;
   final bool willChange;
 
+  /// Forces the widget to always start from 0 and animate to the target value
+  /// Useful when loading cached data to ensure animation is always visible
+  final bool startFromZero;
+
+  /// Delay before starting the animation when startFromZero is true
+  final Duration startFromZeroDelay;
+
   /// Digit configuration
   final Map<int, DigitConfig> digits;
 
@@ -77,6 +84,8 @@ class NumberFlow extends StatefulWidget {
     this.animated = true,
     this.respectMotionPreference = true,
     this.willChange = false,
+    this.startFromZero = false,
+    this.startFromZeroDelay = const Duration(milliseconds: 500),
     this.digits = const {},
     this.plugins = const [],
     this.style,
@@ -101,6 +110,7 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
 
   String _currentText = '';
   final List<_DigitTransition> _digitTransitions = [];
+  bool _isFirstRender = true;
 
   // Group integration - forward declaration, will be set in didChangeDependencies
   dynamic _group;
@@ -148,7 +158,27 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
       curve: widget.opacityCurve,
     ));
 
-    _updateText();
+    // If startFromZero is true and animated, start with 0 and trigger animation
+    if (widget.startFromZero && widget.animated && widget.value != 0) {
+      _currentText = NumberFormatter.format(
+        0,
+        locale: widget.locale,
+        decimalPlaces: widget.decimalPlaces,
+        useGroupSeparator: widget.useGroupSeparator,
+        currencySymbol: widget.currencySymbol,
+        showSign: widget.showSign,
+        notation: widget.notation,
+      );
+
+      // Schedule animation to start after the specified delay
+      Future.delayed(widget.startFromZeroDelay, () {
+        if (mounted) {
+          _animateToNewValue(0, widget.value);
+        }
+      });
+    } else {
+      _updateText();
+    }
 
     // Apply plugins
     for (final plugin in widget.plugins) {
@@ -172,11 +202,18 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
   void didUpdateWidget(NumberFlow oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    // Handle value changes
     if (oldWidget.value != widget.value && widget.animated) {
-      _animateToNewValue(oldWidget.value, widget.value);
+      // If this is the first render and startFromZero is true, animation is already scheduled
+      if (!(_isFirstRender && widget.startFromZero)) {
+        _animateToNewValue(oldWidget.value, widget.value);
+      }
     } else if (!widget.animated) {
       _updateText();
     }
+
+    // Mark that we're no longer in first render
+    _isFirstRender = false;
 
     // Update animation controllers if durations changed
     if (oldWidget.transformDuration != widget.transformDuration) {
@@ -487,13 +524,19 @@ class NumberFlowState extends State<NumberFlow> with TickerProviderStateMixin {
     final effectiveDirection =
         transition.forcedDirection ?? transition.direction;
 
-    // Measure the digit width to ensure proper sizing
+    // Measure the maximum width of all digits (0-9) to ensure consistent spacing
+    double maxDigitWidth = 0.0;
     final textPainter = TextPainter(
-      text: TextSpan(text: '0', style: widget.style),
       textDirection: TextDirection.ltr,
     );
-    textPainter.layout();
-    final digitWidth = textPainter.width;
+
+    for (int i = 0; i <= 9; i++) {
+      textPainter.text = TextSpan(text: i.toString(), style: widget.style);
+      textPainter.layout();
+      maxDigitWidth = math.max(maxDigitWidth, textPainter.width);
+    }
+
+    final digitWidth = maxDigitWidth;
 
     return ClipRect(
       child: SizedBox(
