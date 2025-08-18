@@ -1,3 +1,9 @@
+## 1.0.2
+
+- **Improvements:**
+  - Add startFromZero to enforce change even after render in case you are fetching from cache before render with delay
+  - Add one more example to showcase startFromZero
+
 ## 1.0.1
 
 - **Bug Fixes:**
